@@ -23,6 +23,7 @@ export const addTodo = async (req, res) => {
 };
 
 export const deleteTodo = async (req, res) => {
+    console.log("delete Called")
   try {
     await todoModel.findByIdAndDelete(req.params.id);
     const allTodos = await todoModel.find();
@@ -36,7 +37,7 @@ export const deleteTodo = async (req, res) => {
 export const updateTodo = async (req, res) => {
   try {
     const { title, desc } = req.body;
-    await todoModel.findByIdAndDelete(req.params.id, { title, desc });
+    await todoModel.findByIdAndUpdate(req.params.id, { title, desc });
     const allTodos = await todoModel.find();
     return res.status(200).json({ msg: "Success", data: allTodos });
   } catch (error) {

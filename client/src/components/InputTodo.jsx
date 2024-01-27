@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import axios from 'axios';
 import { TodoContext } from "./HomePage";
 
 const InputTodo = () => {
@@ -7,15 +8,23 @@ const InputTodo = () => {
 
   const { todos, setTodos } = useContext(TodoContext);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // logic to submit task
-    if (!title || !desc) {
-      alert("Enter complete details!!!");
-      return;
+    try {
+      if (!title || !desc) {
+        alert("Enter complete details!!!");
+        return;
+      }
+      const response = await axios.post("http://localhost:5000/todos", {
+        title,
+        desc,
+      });
+      setTodos(response.data.data);
+      setTitle("");
+      setDesc("");
+    } catch (error) {
+      console.error(error);
     }
-    setTodos([...todos, { id:todos.length, title, desc }]);
-    setTitle("");
-    setDesc("");
   };
   return (
     <>

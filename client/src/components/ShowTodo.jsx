@@ -1,17 +1,19 @@
 import React, { useContext, useState } from "react";
 import { TodoContext } from "./HomePage";
+import axios from "axios";
 
 const ShowTodo = () => {
   const { todos, setTodos } = useContext(TodoContext);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [updateId, setUpdateId] = useState("-1");
-  const handleDelete = (_id) => {
-    // await axios.delete("url/:id", )
-    const newTodos = todos.filter(({ id }) => {
-      return id !== _id;
-    });
-    setTodos(newTodos);
+  const handleDelete = async (_id) => {
+    try {
+      const response = await axios.delete(`http://localhost:5000/todos/${_id}`);
+      setTodos(response.data.data);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const intializeUpdate = (_id, _title, _desc) => {
@@ -20,17 +22,27 @@ const ShowTodo = () => {
     setUpdateId(_id);
   };
 
-  const handleUpdate = () => {
-    const data = [];
-    todos.map((todo) => {
-      if (todo.id === updateId) {
-        data.push({ id: updateId, title, desc });
-      } else {
-        data.push(todo);
-      }
-    });
-    setTodos(data);
-    setUpdateId(-1);
+  const handleUpdate = async () => {
+    // const data = [];
+    // todos.map((todo) => {
+    //   if (todo.id === updateId) {
+    //     data.push({ id: updateId, title, desc });
+    //   } else {
+    //     data.push(todo);
+    //   }
+    // });
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/todos/${updateId}`,
+        {
+          title,
+          desc,
+        },
+      );
+
+      setTodos(response.data.data);
+      setUpdateId(-1);
+    } catch (error) {}
   };
 
   return (
@@ -46,8 +58,8 @@ const ShowTodo = () => {
         {todos.map((todo, id) => {
           return (
             <tr key={id}>
-              <td>{todo.id}</td>
-              {updateId === todo.id ? (
+              <td>{todo._id}</td>
+              {updateId === todo._id ? (
                 <>
                   <td>
                     <input
@@ -76,7 +88,7 @@ const ShowTodo = () => {
                   <td>
                     <button
                       onClick={() =>
-                        intializeUpdate(todo.id, todo.title, todo.desc)
+                        intializeUpdate(todo._id, todo.title, todo.desc)
                       }
                     >
                       Update
@@ -85,7 +97,7 @@ const ShowTodo = () => {
                 </>
               )}
               <td>
-                <button onClick={() => handleDelete(todo.id)}>Delete</button>
+                <button onClick={() => handleDelete(todo._id)}>Delete</button>
               </td>
             </tr>
           );
