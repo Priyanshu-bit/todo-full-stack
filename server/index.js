@@ -6,8 +6,14 @@ import morgan from "morgan";
 
 const app = express();
 
+const corsOptions = {
+  origin: "https://todo-fe-l5xj.onrender.com",
+  AccessControlAllowOrigin: "*",
+  methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
-app.use(cors());
 app.use(morgan());
 
 mongoose.connect("mongodb://127.0.0.1:27017/todoDB");
