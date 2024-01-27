@@ -9,7 +9,7 @@ const ShowTodo = () => {
   const [updateId, setUpdateId] = useState("-1");
   const handleDelete = async (_id) => {
     try {
-      const response = await axios.delete(`http://localhost:5000/todos/${_id}`);
+      const response = await axios.delete(`https://todo-be-5ea3.onrender.com/todos/${_id}`);
       setTodos(response.data.data);
     } catch (error) {
       console.error(error);
@@ -33,7 +33,7 @@ const ShowTodo = () => {
     // });
     try {
       const response = await axios.put(
-        `http://localhost:5000/todos/${updateId}`,
+        `https://todo-be-5ea3.onrender.com/todos/${updateId}`,
         {
           title,
           desc,

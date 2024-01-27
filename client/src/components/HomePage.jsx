@@ -10,7 +10,9 @@ const HomePage = () => {
 
     const fetchAllTodos = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/todos');
+            const response = await axios.get(
+              "https://todo-be-5ea3.onrender.com/todos",
+            );
             setTodos(response.data.data);
         } catch (error) {
             console.error(error)

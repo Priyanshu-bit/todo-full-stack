@@ -15,10 +15,13 @@ const InputTodo = () => {
         alert("Enter complete details!!!");
         return;
       }
-      const response = await axios.post("http://localhost:5000/todos", {
-        title,
-        desc,
-      });
+      const response = await axios.post(
+        "https://todo-be-5ea3.onrender.com/todos",
+        {
+          title,
+          desc,
+        },
+      );
       setTodos(response.data.data);
       setTitle("");
       setDesc("");
