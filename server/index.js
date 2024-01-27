@@ -2,7 +2,11 @@ import express from "express";
 import cors from "cors";
 import todoRouter from "./routes/todoRoutes.js";
 import mongoose from "mongoose";
-import morgan from "morgan";
+import * as dotenv from "dotenv";
+
+dotenv.config();
+
+const MONGODB_URL = process.env.MONGODB_URL;
 
 const app = express();
 
@@ -14,9 +18,8 @@ const corsOptions = {
 app.use(cors(corsOptions));
 
 app.use(express.json());
-app.use(morgan());
 
-mongoose.connect("mongodb://127.0.0.1:27017/todoDB");
+mongoose.connect(MONGODB_URL);
 
 app.use("/todos", todoRouter);
 
